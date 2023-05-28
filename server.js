@@ -26,9 +26,8 @@ const server = http.createServer((req, res) => {
 });
 
 // Start the server
-const port = process.env.PORT || 3000; // Use the port provided by Render.com or fallback to 3000
-server.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+const listener = app.listen(process.env.PORT || 3000, () => {
+  console.log('App listening on port ' + listener.address().port);
 });
 
 // Helper function to get image dimensions
