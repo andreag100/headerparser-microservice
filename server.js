@@ -1,6 +1,6 @@
 // Import required modules
-const http = require('http');
-const fs = require('fs');
+const express = require('express')
+const app = express()
 const pixelmatch = require('pixelmatch');
 
 // Create an HTTP server
