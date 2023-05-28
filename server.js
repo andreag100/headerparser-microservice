@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
 });
 
 // Start the server
-const port = process.env.PORT || 10000; // Use port 10000 instead of 3000
+const port = process.env.PORT || 80; // Use the default HTTP port 80
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
