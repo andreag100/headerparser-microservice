@@ -26,8 +26,9 @@ const server = http.createServer((req, res) => {
 });
 
 // Start the server
-const listener = app.listen(process.env.PORT || 10000, () => {
-  console.log('App listening on port ' + listener.address().port);
+const port = process.env.PORT || 10000; // Use port 10000 instead of 3000
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
 
 // Helper function to get image dimensions
