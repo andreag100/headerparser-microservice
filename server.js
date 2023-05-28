@@ -8,8 +8,8 @@ const server = http.createServer((req, res) => {
   // Handle requests
   if (req.method === 'GET' && req.url === '/compare') {
     // Load images and perform comparison
-const img1 = fs.readFileSync('/images/image1/triangles.png');
-const img2 = fs.readFileSync('/images/image2/triangles.png');
+const img1 = fs.readFileSync('images/image1/triangles.png');
+const img2 = fs.readFileSync('images/image2/triangles.png');
 const img1Dimensions = getImageDimensions(img1);
 const img2Dimensions = getImageDimensions(img2);
 
