@@ -10,11 +10,22 @@ const server = http.createServer((req, res) => {
     // Load images and perform comparison
 const img1 = fs.readFileSync('images/image1/_triangles.png');
 const img2 = fs.readFileSync('images/image2/_triangles.png');
-const img1Dimensions = getImageDimensions(img1);
-const img2Dimensions = getImageDimensions(img2);
+const { createCanvas, loadImage } = require('canvas');
 
-console.log('Image 1 dimensions:', img1Dimensions);
-console.log('Image 2 dimensions:', img2Dimensions);
+// Helper function to get image dimensions
+function getImageDimensions(imageBuffer) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      resolve({ width: img.width, height: img.height });
+    };
+    img.onerror = (error) => {
+      reject(error);
+    };
+    img.src = imageBuffer;
+  });
+}
+
 
 
 if (img1Dimensions.width !== img2Dimensions.width || img1Dimensions.height !== img2Dimensions.height) {
