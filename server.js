@@ -1,3 +1,8 @@
+// Import required modules
+const http = require('https');
+const fs = require('fs');
+const pixelmatch = require('pixelmatch');
+
 // Create an HTTP server
 const server = http.createServer((req, res) => {
   // Handle requests
@@ -19,3 +24,17 @@ const server = http.createServer((req, res) => {
     res.end('Not found');
   }
 });
+
+// Start the server
+const listener = app.listen(process.env.PORT || 10000, () => {
+  console.log('App listening on port ' + listener.address().port);
+});
+
+// Helper function to get image dimensions
+const sharp = require('sharp');
+
+// Helper function to get image dimensions
+async function getImageDimensions(imageBuffer) {
+  const metadata = await sharp(imageBuffer).metadata();
+  return { width: metadata.width, height: metadata.height };
+}
