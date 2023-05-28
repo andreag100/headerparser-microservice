@@ -8,12 +8,19 @@ const server = http.createServer((req, res) => {
   // Handle requests
   if (req.method === 'GET' && req.url === '/compare') {
     // Load images and perform comparison
-    const img1 = fs.readFileSync('images/image1/triangles.png');
-    const img2 = fs.readFileSync('images/image2/triangles.png');
-    const { width, height } = getImageDimensions(img1); // Replace with your method to get image dimensions
+const img1 = fs.readFileSync('path/to/image1.png');
+const img2 = fs.readFileSync('path/to/image2.png');
+const img1Dimensions = getImageDimensions(img1);
+const img2Dimensions = getImageDimensions(img2);
 
-    const diff = new Uint8Array(width * height * 4); // Create an array to store diff data
-    const numDiffPixels = pixelmatch(img1, img2, diff, width, height, { threshold: 0.1 });
+if (img1Dimensions.width !== img2Dimensions.width || img1Dimensions.height !== img2Dimensions.height) {
+  throw new Error('Image sizes do not match.');
+}
+
+const { width, height } = img1Dimensions;
+
+const diff = new Uint8Array(width * height * 4);
+const numDiffPixels = pixelmatch(img1, img2, diff, width, height, { threshold: 0.1 });
 
     // Do something with the comparison result
     res.writeHead(200, { 'Content-Type': 'application/json' });
