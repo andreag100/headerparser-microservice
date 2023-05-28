@@ -31,9 +31,10 @@ const listener = app.listen(process.env.PORT || 10000, () => {
 });
 
 // Helper function to get image dimensions
-function getImageDimensions(imageBuffer) {
-  // Implement your own logic to get image dimensions here
-  // You can use additional libraries like 'sharp' or 'jimp' for image processing if needed
-  // Return an object with 'width' and 'height' properties
-  return { width: 0, height: 0 };
+const sharp = require('sharp');
+
+// Helper function to get image dimensions
+async function getImageDimensions(imageBuffer) {
+  const metadata = await sharp(imageBuffer).metadata();
+  return { width: metadata.width, height: metadata.height };
 }
