@@ -13,11 +13,6 @@ const img2 = fs.readFileSync('images/image2/_triangles.png');
 const { createCanvas, loadImage } = require('canvas');
 const pixelmatch = require('pixelmatch');
 
-// Function to get the dimensions of an image
-async function getImageDimensions(imagePath) {
-  const image = await loadImage(imagePath);
-  return { width: image.width, height: image.height };
-}
 
 // Compare images
 async function compareImages(imagePath1, imagePath2) {
