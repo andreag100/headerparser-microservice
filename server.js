@@ -10,8 +10,8 @@ const server = http.createServer((req, res) => {
   // Handle requests
   if (req.method === 'GET' && req.url === '/compare') {
     // Load images and perform comparison
-    const img1 = fs.readFileSync('/images/image1/triangles.png');
-    const img2 = fs.readFileSync('/images/image2/triangles.png');
+    const img1 = fs.readFileSync('images/image1/triangles.png');
+    const img2 = fs.readFileSync('images/image2/triangles.png');
 
     // Compare images
     async function compareImages(imagePath1, imagePath2) {
@@ -38,8 +38,8 @@ const server = http.createServer((req, res) => {
     }
 
     // Example usage
-    const imagePath1 = '/images/image1/triangles.png';
-    const imagePath2 = '/images/image2/triangles.png';
+    const imagePath1 = 'images/image1/triangles.png';
+    const imagePath2 = 'images/image2/triangles.png';
 
     compareImages(imagePath1, imagePath2)
       .then(({ numDiffPixels }) => {
