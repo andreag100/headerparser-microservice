@@ -10,11 +10,14 @@ const server = http.createServer((req, res) => {
   // Handle requests
   if (req.method === 'GET' && req.url === '/compare') {
     // Load images and perform comparison
-    const imagePath1 = 'image1/1triangles.png';
-    const imagePath2 = 'image2/2triangles.png';
+    const imagePath1 = 'images/image1/triangles.png';
+    const imagePath2 = 'images/image2/triangles.png';
 
-    Promise.all([loadImageDimensions(imagePath1), loadImageDimensions(imagePath2)])
-      .then(([img1Dimensions, img2Dimensions]) => {
+    Promise.all([loadImage(imagePath1), loadImage(imagePath2)])
+      .then(([img1, img2]) => {
+        const img1Dimensions = { width: img1.width, height: img1.height };
+        const img2Dimensions = { width: img2.width, height: img2.height };
+
         console.log('Image 1 dimensions:', img1Dimensions);
         console.log('Image 2 dimensions:', img2Dimensions);
 
@@ -22,7 +25,7 @@ const server = http.createServer((req, res) => {
           throw new Error('Image sizes do not match.');
         }
 
-        return compareImages(imagePath1, imagePath2);
+        return compareImages(img1, img2, img1Dimensions);
       })
       .then(({ numDiffPixels }) => {
         // Do something with the comparison result
@@ -47,29 +50,15 @@ server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-// Load image dimensions
-function loadImageDimensions(imagePath) {
-  return new Promise((resolve, reject) => {
-    loadImage(imagePath).then(image => {
-      resolve({ width: image.width, height: image.height });
-    }).catch(error => {
-      reject(error);
-    });
-  });
-}
-
 // Compare images
-async function compareImages(imagePath1, imagePath2) {
-  const img1 = fs.readFileSync(imagePath1);
-  const img2 = fs.readFileSync(imagePath2);
+function compareImages(img1, img2, img1Dimensions) {
+  const { width, height } = img1Dimensions;
 
-  const { width, height } = await loadImageDimensions(imagePath1);
-
-  console.log('Compare images:', imagePath1, imagePath2);
+  console.log('Compare images:', img1, img2);
   console.log('Image dimensions:', width, height);
 
   const diff = new Uint8Array(width * height * 4);
-  const numDiffPixels = pixelmatch(img1, img2, diff, width, height, { threshold: 0.1 });
+  const numDiffPixels = pixelmatch(img1.data, img2.data, diff, width, height, { threshold: 0.1 });
 
   // Do something with the comparison result
   return { numDiffPixels };
