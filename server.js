@@ -11,6 +11,42 @@ const server = http.createServer((req, res) => {
 const img1 = fs.readFileSync('images/image1/_triangles.png');
 const img2 = fs.readFileSync('images/image2/_triangles.png');
 const { createCanvas, loadImage } = require('canvas');
+const pixelmatch = require('pixelmatch');
+
+// Function to get the dimensions of an image
+async function getImageDimensions(imagePath) {
+  const image = await loadImage(imagePath);
+  return { width: image.width, height: image.height };
+}
+
+// Compare images
+async function compareImages(imagePath1, imagePath2) {
+  const img1Dimensions = await getImageDimensions(imagePath1);
+  const img2Dimensions = await getImageDimensions(imagePath2);
+
+  if (img1Dimensions.width !== img2Dimensions.width || img1Dimensions.height !== img2Dimensions.height) {
+    throw new Error('Image sizes do not match.');
+  }
+
+  // Rest of your comparison logic
+
+  // Example code to return the dimensions for testing
+  return { img1Dimensions, img2Dimensions };
+}
+
+// Example usage
+const imagePath1 = 'images/image1/_triangles.png';
+const imagePath2 = 'images/image2/_triangles.png';
+
+compareImages(imagePath1, imagePath2)
+  .then(({ img1Dimensions, img2Dimensions }) => {
+    console.log('Image 1 dimensions:', img1Dimensions);
+    console.log('Image 2 dimensions:', img2Dimensions);
+    // Rest of your code
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 
 // Helper function to get image dimensions
 function getImageDimensions(imageBuffer) {
