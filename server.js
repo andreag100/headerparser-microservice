@@ -15,6 +15,9 @@ const server = http.createServer((req, res) => {
 
     Promise.all([loadImageDimensions(imagePath1), loadImageDimensions(imagePath2)])
       .then(([img1Dimensions, img2Dimensions]) => {
+        console.log('Image 1 dimensions:', img1Dimensions);
+        console.log('Image 2 dimensions:', img2Dimensions);
+
         if (img1Dimensions.width !== img2Dimensions.width || img1Dimensions.height !== img2Dimensions.height) {
           throw new Error('Image sizes do not match.');
         }
@@ -61,6 +64,9 @@ async function compareImages(imagePath1, imagePath2) {
   const img2 = fs.readFileSync(imagePath2);
 
   const { width, height } = await loadImageDimensions(imagePath1);
+
+  console.log('Compare images:', imagePath1, imagePath2);
+  console.log('Image dimensions:', width, height);
 
   const diff = new Uint8Array(width * height * 4);
   const numDiffPixels = pixelmatch(img1, img2, diff, width, height, { threshold: 0.1 });
