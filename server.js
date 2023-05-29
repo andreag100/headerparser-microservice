@@ -10,34 +10,6 @@ const server = http.createServer((req, res) => {
   // Handle requests
   if (req.method === 'GET' && req.url === '/compare') {
     // Load images and perform comparison
-    const img1 = fs.readFileSync('images/image1/triangles.png');
-    const img2 = fs.readFileSync('images/image2/triangles.png');
-
-    // Compare images
-    async function compareImages(imagePath1, imagePath2) {
-      const img1Dimensions = await getImageDimensions(imagePath1);
-      const img2Dimensions = await getImageDimensions(imagePath2);
-
-      if (img1Dimensions.width !== img2Dimensions.width || img1Dimensions.height !== img2Dimensions.height) {
-        throw new Error('Image sizes do not match.');
-      }
-
-      const { width, height } = img1Dimensions;
-
-      const diff = new Uint8Array(width * height * 4);
-      const numDiffPixels = pixelmatch(img1, img2, diff, width, height, { threshold: 0.1 });
-
-      // Do something with the comparison result
-      return { numDiffPixels };
-    }
-
-    // Helper function to get image dimensions
-    async function getImageDimensions(imageBuffer) {
-      const metadata = await sharp(imageBuffer).metadata();
-      return { width: metadata.width, height: metadata.height };
-    }
-
-    // Example usage
     const imagePath1 = 'images/image1/triangles.png';
     const imagePath2 = 'images/image2/triangles.png';
 
@@ -65,3 +37,29 @@ server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+// Compare images
+async function compareImages(imagePath1, imagePath2) {
+  const img1 = fs.readFileSync(imagePath1);
+  const img2 = fs.readFileSync(imagePath2);
+
+  const img1Dimensions = await getImageDimensions(img1);
+  const img2Dimensions = await getImageDimensions(img2);
+
+  if (img1Dimensions.width !== img2Dimensions.width || img1Dimensions.height !== img2Dimensions.height) {
+    throw new Error('Image sizes do not match.');
+  }
+
+  const { width, height } = img1Dimensions;
+
+  const diff = new Uint8Array(width * height * 4);
+  const numDiffPixels = pixelmatch(img1, img2, diff, width, height, { threshold: 0.1 });
+
+  // Do something with the comparison result
+  return { numDiffPixels };
+}
+
+// Helper function to get image dimensions
+async function getImageDimensions(imageBuffer) {
+  const metadata = await sharp(imageBuffer).metadata();
+  return { width: metadata.width, height: metadata.height };
+}
