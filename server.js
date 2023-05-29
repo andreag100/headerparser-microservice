@@ -13,7 +13,14 @@ const server = http.createServer((req, res) => {
     const imagePath1 = 'image1/1triangles.png';
     const imagePath2 = 'image2/2triangles.png';
 
-    compareImages(imagePath1, imagePath2)
+    Promise.all([loadImageDimensions(imagePath1), loadImageDimensions(imagePath2)])
+      .then(([img1Dimensions, img2Dimensions]) => {
+        if (img1Dimensions.width !== img2Dimensions.width || img1Dimensions.height !== img2Dimensions.height) {
+          throw new Error('Image sizes do not match.');
+        }
+
+        return compareImages(imagePath1, imagePath2);
+      })
       .then(({ numDiffPixels }) => {
         // Do something with the comparison result
         res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -37,29 +44,27 @@ server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+// Load image dimensions
+function loadImageDimensions(imagePath) {
+  return new Promise((resolve, reject) => {
+    loadImage(imagePath).then(image => {
+      resolve({ width: image.width, height: image.height });
+    }).catch(error => {
+      reject(error);
+    });
+  });
+}
+
 // Compare images
 async function compareImages(imagePath1, imagePath2) {
   const img1 = fs.readFileSync(imagePath1);
   const img2 = fs.readFileSync(imagePath2);
 
-  const img1Dimensions = await getImageDimensions(img1);
-  const img2Dimensions = await getImageDimensions(img2);
-
-  if (img1Dimensions.width !== img2Dimensions.width || img1Dimensions.height !== img2Dimensions.height) {
-    throw new Error('Image sizes do not match.');
-  }
-
-  const { width, height } = img1Dimensions;
+  const { width, height } = await loadImageDimensions(imagePath1);
 
   const diff = new Uint8Array(width * height * 4);
   const numDiffPixels = pixelmatch(img1, img2, diff, width, height, { threshold: 0.1 });
 
   // Do something with the comparison result
   return { numDiffPixels };
-}
-
-// Helper function to get image dimensions
-async function getImageDimensions(imageBuffer) {
-  const metadata = await sharp(imageBuffer).metadata();
-  return { width: metadata.width, height: metadata.height };
 }
