@@ -25,7 +25,10 @@ const server = http.createServer((req, res) => {
           throw new Error('Image sizes do not match.');
         }
 
-        return compareImages(img1, img2, img1Dimensions);
+        const img1Data = getImageData(img1);
+        const img2Data = getImageData(img2);
+
+        return compareImages(img1Data, img2Data, img1Dimensions);
       })
       .then(({ numDiffPixels }) => {
         // Do something with the comparison result
@@ -51,15 +54,23 @@ server.listen(port, () => {
 });
 
 // Compare images
-function compareImages(img1, img2, img1Dimensions) {
+function compareImages(img1Data, img2Data, img1Dimensions) {
   const { width, height } = img1Dimensions;
 
-  console.log('Compare images:', img1, img2);
+  console.log('Compare images:', img1Data, img2Data);
   console.log('Image dimensions:', width, height);
 
   const diff = new Uint8Array(width * height * 4);
-  const numDiffPixels = pixelmatch(img1.data, img2.data, diff, width, height, { threshold: 0.1 });
+  const numDiffPixels = pixelmatch(img1Data, img2Data, diff, width, height, { threshold: 0.1 });
 
   // Do something with the comparison result
   return { numDiffPixels };
+}
+
+// Get image data
+function getImageData(image) {
+  const canvas = createCanvas(image.width, image.height);
+  const context = canvas.getContext('2d');
+  context.drawImage(image, 0, 0);
+  return context.getImageData(0, 0, image.width, image.height).data;
 }
