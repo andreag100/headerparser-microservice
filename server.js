@@ -63,14 +63,22 @@ const server = http.createServer((req, res) => {
     const imagePath2 = 'image2/2triangles.png';
 
     compareImages(imagePath1, imagePath2)
-  .then(({ numDiffPixels }) => {
-    // Do something with the comparison result
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ numDiffPixels }));
-  })
-  .catch(error => {
-    // Handle the error
-    console.error(error);
-    res.writeHead(500, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'Internal Server Error' }));
-  });
+      .then(({ numDiffPixels }) => {
+        // Do something with the comparison result
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ numDiffPixels }));
+      })
+      .catch(error => {
+        // Handle the error
+        console.error(error);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+      });
+  }
+});
+
+// Start the server
+const port = 10000;
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
