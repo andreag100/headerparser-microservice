@@ -10,8 +10,8 @@ const server = http.createServer((req, res) => {
   // Handle requests
   if (req.method === 'GET' && req.url === '/compare') {
     // Load images and perform comparison
-    const imagePath1 = 'images/image1/triangles.png';
-    const imagePath2 = 'images/image2/triangles.png';
+    const imagePath1 = 'image1/1triangles.png';
+    const imagePath2 = 'image2/2triangles.png';
 
     compareImages(imagePath1, imagePath2)
       .then(({ numDiffPixels }) => {
