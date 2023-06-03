@@ -10,8 +10,8 @@ const server = http.createServer((req, res) => {
   // Handle requests
   if (req.method === 'GET' && req.url === '/compare') {
     // Load images and perform comparison
-    const imagePath1 = 'image1/1triangles.png';
-    const imagePath2 = 'image2/2triangles.png';
+    const imagePath1 = 'https://web-coffee.digital/imgs/image1/1triangles.png';
+    const imagePath2 = 'https://web-coffee.digital/imgs/image2/2triangles.png';
 
     Promise.all([loadImage(imagePath1), loadImage(imagePath2)])
       .then(([img1, img2]) => {
