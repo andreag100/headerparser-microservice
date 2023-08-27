@@ -57,14 +57,17 @@ server.listen(port, () => {
 function compareImages(img1Data, img2Data, img1Dimensions) {
   const { width, height } = img1Dimensions;
 
-  console.log('Compare images:', img1Data, img2Data);
-  console.log('Image dimensions:', width, height);
-
   const diff = new Uint8Array(width * height * 4);
   const numDiffPixels = pixelmatch(img1Data, img2Data, diff, width, height, { threshold: 0.1 });
 
+  const totalPixels = width * height;
+  const differencePercentage = (numDiffPixels / totalPixels) * 100;
+
   // Do something with the comparison result
-  return { numDiffPixels };
+  return {
+    numDiffPixels,
+    differencePercentage
+  };
 }
 
 // Get image data
