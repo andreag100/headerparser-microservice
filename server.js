@@ -10,8 +10,8 @@ const server = http.createServer((req, res) => {
   // Handle requests
   if (req.method === 'GET' && req.url === '/compare') {
     // Load images and perform comparison
-    const imagePath1 = 'https://entrypage.link/imgs/image1/screenshot.png';
-    const imagePath2 = 'https://entrypage.link/imgs/image2/screenshot.png';
+    const imagePath1 = 'https://entrypage.link/imgs/https___integratedfitness_com_au/image1/screenshot.png';
+    const imagePath2 = 'https://entrypage.link/imgs/https___integratedfitness_com_au/image2/screenshot.png';
 
     Promise.all([loadImage(imagePath1), loadImage(imagePath2)])
       .then(([img1, img2]) => {
