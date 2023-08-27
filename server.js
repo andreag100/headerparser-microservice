@@ -63,10 +63,13 @@ function compareImages(img1Data, img2Data, img1Dimensions) {
   const totalPixels = width * height;
   const differencePercentage = (numDiffPixels / totalPixels) * 100;
 
+  // Log the difference for verification
+  console.log(`Difference: ${differencePercentage.toFixed(2)}%`);
+
   // Do something with the comparison result
   return {
     numDiffPixels,
-    differencePercentage
+    differencePercentage: differencePercentage.toFixed(2)
   };
 }
 
