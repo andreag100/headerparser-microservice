@@ -30,11 +30,12 @@ const server = http.createServer((req, res) => {
 
         return compareImages(img1Data, img2Data, img1Dimensions);
       })
-      .then(({ numDiffPixels }) => {
+      .then(({ numDiffPixels, differencePercentage }) => {
         // Do something with the comparison result
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ numDiffPixels }));
-      })
+        res.end(JSON.stringify({ numDiffPixels, differencePercentage }));
+})
+
       .catch(error => {
         console.error('Error:', error);
         res.writeHead(500, { 'Content-Type': 'text/plain' });
