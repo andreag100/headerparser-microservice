@@ -5,15 +5,15 @@ const transporter = nodemailer.createTransport({
     port: 465,
     secure: true, // Use SSL
     auth: {
-        user: 'mail@web-coffee.asia', // Your Zoho email address
-        pass: 'RJAKJ96gtCn3' // Your Zoho email password or app-specific password
+        user: '', // Your Zoho email address
+        pass: '' // Your Zoho email password or app-specific password
     }
 });
 
 function sendEmail(subject, message) {
     const mailOptions = {
-        from: 'mail@web-coffee.asia', // Sender address
-        to: 'webmaster@creareweb.com', // List of receivers
+        from: '', // Sender address
+        to: '', // List of receivers
         subject: subject, // Subject line
         text: message // Plain text message body
     };
